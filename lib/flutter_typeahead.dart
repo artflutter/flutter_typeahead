@@ -1,9 +1,5 @@
 library flutter_typeahead;
 
-import 'dart:async';
-//
-// export 'src/typedef.dart';
-// export 'src/flutter_typeahead.dart';
-// export 'src/cupertino_flutter_typeahead.dart';
+class Test {}
 
-typedef FutureOr<Iterable<T>> SuggestionsCallback1<T>(String pattern);
+enum T { a, b }
