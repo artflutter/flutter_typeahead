@@ -295,8 +295,8 @@ class TypeAheadFormField<T> extends FormField<String> {
             enabled: enabled,
             autovalidateMode: autovalidateMode,
             builder: (FormFieldState<String> field) {
-              final _TypeAheadFormFieldState state =
-                  field as _TypeAheadFormFieldState<dynamic>;
+              final TypeAheadFormFieldState state =
+                  field as TypeAheadFormFieldState<dynamic>;
 
               return TypeAheadField(
                   getImmediateSuggestions: getImmediateSuggestions,
@@ -335,10 +335,10 @@ class TypeAheadFormField<T> extends FormField<String> {
             });
 
   @override
-  _TypeAheadFormFieldState<T> createState() => _TypeAheadFormFieldState<T>();
+  TypeAheadFormFieldState<T> createState() => TypeAheadFormFieldState<T>();
 }
 
-class _TypeAheadFormFieldState<T> extends FormFieldState<String> {
+class TypeAheadFormFieldState<T> extends FormFieldState<String> {
   TextEditingController? _controller;
 
   TextEditingController? get _effectiveController =>
@@ -699,14 +699,14 @@ class TypeAheadField<T> extends StatefulWidget {
         super(key: key);
 
   @override
-  _TypeAheadFieldState<T> createState() => _TypeAheadFieldState<T>();
+  TypeAheadFieldState<T> createState() => TypeAheadFieldState<T>();
 }
 
-class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
+class TypeAheadFieldState<T> extends State<TypeAheadField<T>>
     with WidgetsBindingObserver {
   FocusNode? _focusNode;
   TextEditingController? _textEditingController;
-  _SuggestionsBox? _suggestionsBox;
+  SuggestionsBox? _suggestionsBox;
 
   TextEditingController? get _effectiveController =>
       widget.textFieldConfiguration.controller ?? _textEditingController;
@@ -762,7 +762,7 @@ class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
     }
 
     this._suggestionsBox =
-        _SuggestionsBox(context, widget.direction, widget.autoFlipDirection);
+        SuggestionsBox(context, widget.direction, widget.autoFlipDirection);
     widget.suggestionsBoxController?._suggestionsBox = this._suggestionsBox;
     widget.suggestionsBoxController?._effectiveFocusNode =
         this._effectiveFocusNode;
@@ -829,7 +829,7 @@ class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
 
   void _initOverlayEntry() {
     this._suggestionsBox!._overlayEntry = OverlayEntry(builder: (context) {
-      final suggestionsList = _SuggestionsList<T>(
+      final suggestionsList = SuggestionsList<T>(
         suggestionsBox: _suggestionsBox,
         decoration: widget.suggestionsBoxDecoration,
         debounceDuration: widget.debounceDuration,
@@ -940,8 +940,8 @@ class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
   }
 }
 
-class _SuggestionsList<T> extends StatefulWidget {
-  final _SuggestionsBox? suggestionsBox;
+class SuggestionsList<T> extends StatefulWidget {
+  final SuggestionsBox? suggestionsBox;
   final TextEditingController? controller;
   final bool getImmediateSuggestions;
   final SuggestionSelectionCallback<T>? onSuggestionSelected;
@@ -962,7 +962,7 @@ class _SuggestionsList<T> extends StatefulWidget {
   final bool? hideOnError;
   final bool? keepSuggestionsOnLoading;
 
-  _SuggestionsList({
+  SuggestionsList({
     required this.suggestionsBox,
     this.controller,
     this.getImmediateSuggestions: false,
@@ -986,10 +986,10 @@ class _SuggestionsList<T> extends StatefulWidget {
   });
 
   @override
-  _SuggestionsListState<T> createState() => _SuggestionsListState<T>();
+  SuggestionsListState<T> createState() => SuggestionsListState<T>();
 }
 
-class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
+class SuggestionsListState<T> extends State<SuggestionsList<T>>
     with SingleTickerProviderStateMixin {
   Iterable<T>? _suggestions;
   late bool _suggestionsValid;
@@ -1002,7 +1002,7 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
   late final ScrollController _scrollController =
       widget.scrollController ?? ScrollController();
 
-  _SuggestionsListState() {
+  SuggestionsListState() {
     this._controllerListener = () {
       // If we came here because of a change in selected text, not because of
       // actual change in text
@@ -1028,7 +1028,7 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
   }
 
   @override
-  void didUpdateWidget(_SuggestionsList<T> oldWidget) {
+  void didUpdateWidget(SuggestionsList<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.controller!.addListener(this._controllerListener);
     _getSuggestions();
@@ -1586,7 +1586,7 @@ class TextFieldConfiguration {
   }
 }
 
-class _SuggestionsBox {
+class SuggestionsBox {
   static const int waitMetricsTimeoutMillis = 1000;
   static const double minOverlaySpace = 64.0;
 
@@ -1604,7 +1604,7 @@ class _SuggestionsBox {
   double textBoxHeight = 100.0;
   late double directionUpOffset;
 
-  _SuggestionsBox(this.context, this.direction, this.autoFlipDirection)
+  SuggestionsBox(this.context, this.direction, this.autoFlipDirection)
       : desiredDirection = direction;
 
   void open() {
@@ -1797,7 +1797,7 @@ class _SuggestionsBox {
 /// Supply an instance of this class to the [TypeAhead.suggestionsBoxController]
 /// property to manually control the suggestions box
 class SuggestionsBoxController {
-  _SuggestionsBox? _suggestionsBox;
+  SuggestionsBox? _suggestionsBox;
   FocusNode? _effectiveFocusNode;
 
   /// Opens the suggestions box

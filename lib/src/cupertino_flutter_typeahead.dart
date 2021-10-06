@@ -108,8 +108,8 @@ class CupertinoTypeAheadFormField<T> extends FormField<String> {
             enabled: enabled,
             autovalidateMode: autovalidateMode,
             builder: (FormFieldState<String> field) {
-              final _CupertinoTypeAheadFormFieldState state =
-                  field as _CupertinoTypeAheadFormFieldState<dynamic>;
+              final CupertinoTypeAheadFormFieldState state =
+                  field as CupertinoTypeAheadFormFieldState<dynamic>;
 
               return CupertinoTypeAheadField(
                 getImmediateSuggestions: getImmediateSuggestions,
@@ -146,11 +146,11 @@ class CupertinoTypeAheadFormField<T> extends FormField<String> {
             });
 
   @override
-  _CupertinoTypeAheadFormFieldState<T> createState() =>
-      _CupertinoTypeAheadFormFieldState<T>();
+  CupertinoTypeAheadFormFieldState<T> createState() =>
+      CupertinoTypeAheadFormFieldState<T>();
 }
 
-class _CupertinoTypeAheadFormFieldState<T> extends FormFieldState<String> {
+class CupertinoTypeAheadFormFieldState<T> extends FormFieldState<String> {
   TextEditingController? _controller;
 
   TextEditingController? get _effectiveController =>
@@ -502,15 +502,15 @@ class CupertinoTypeAheadField<T> extends StatefulWidget {
         super(key: key);
 
   @override
-  _CupertinoTypeAheadFieldState<T> createState() =>
-      _CupertinoTypeAheadFieldState<T>();
+  CupertinoTypeAheadFieldState<T> createState() =>
+      CupertinoTypeAheadFieldState<T>();
 }
 
-class _CupertinoTypeAheadFieldState<T> extends State<CupertinoTypeAheadField<T>>
+class CupertinoTypeAheadFieldState<T> extends State<CupertinoTypeAheadField<T>>
     with WidgetsBindingObserver {
   FocusNode? _focusNode;
   TextEditingController? _textEditingController;
-  _CupertinoSuggestionsBox? _suggestionsBox;
+  CupertinoSuggestionsBox? _suggestionsBox;
 
   TextEditingController? get _effectiveController =>
       widget.textFieldConfiguration.controller ?? _textEditingController;
@@ -565,7 +565,7 @@ class _CupertinoTypeAheadFieldState<T> extends State<CupertinoTypeAheadField<T>>
       this._focusNode = FocusNode();
     }
 
-    this._suggestionsBox = _CupertinoSuggestionsBox(
+    this._suggestionsBox = CupertinoSuggestionsBox(
         context, widget.direction, widget.autoFlipDirection);
     widget.suggestionsBoxController?._suggestionsBox = this._suggestionsBox;
     widget.suggestionsBoxController?._effectiveFocusNode =
@@ -633,7 +633,7 @@ class _CupertinoTypeAheadFieldState<T> extends State<CupertinoTypeAheadField<T>>
 
   void _initOverlayEntry() {
     this._suggestionsBox!._overlayEntry = OverlayEntry(builder: (context) {
-      final suggestionsList = _SuggestionsList<T>(
+      final suggestionsList = CupertinoSuggestionsList<T>(
         suggestionsBox: _suggestionsBox,
         decoration: widget.suggestionsBoxDecoration,
         debounceDuration: widget.debounceDuration,
@@ -748,8 +748,8 @@ class _CupertinoTypeAheadFieldState<T> extends State<CupertinoTypeAheadField<T>>
   }
 }
 
-class _SuggestionsList<T> extends StatefulWidget {
-  final _CupertinoSuggestionsBox? suggestionsBox;
+class CupertinoSuggestionsList<T> extends StatefulWidget {
+  final CupertinoSuggestionsBox? suggestionsBox;
   final TextEditingController? controller;
   final bool getImmediateSuggestions;
   final SuggestionSelectionCallback<T>? onSuggestionSelected;
@@ -769,7 +769,7 @@ class _SuggestionsList<T> extends StatefulWidget {
   final bool? hideOnError;
   final bool? keepSuggestionsOnLoading;
 
-  _SuggestionsList({
+  CupertinoSuggestionsList({
     required this.suggestionsBox,
     this.controller,
     this.getImmediateSuggestions: false,
@@ -792,10 +792,12 @@ class _SuggestionsList<T> extends StatefulWidget {
   });
 
   @override
-  _SuggestionsListState<T> createState() => _SuggestionsListState<T>();
+  CupertinoSuggestionsListState<T> createState() =>
+      CupertinoSuggestionsListState<T>();
 }
 
-class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
+class CupertinoSuggestionsListState<T>
+    extends State<CupertinoSuggestionsList<T>>
     with SingleTickerProviderStateMixin {
   Iterable<T>? _suggestions;
   late bool _suggestionsValid;
@@ -807,7 +809,7 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
   String? _lastTextValue;
 
   @override
-  void didUpdateWidget(_SuggestionsList<T> oldWidget) {
+  void didUpdateWidget(CupertinoSuggestionsList<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     _getSuggestions();
   }
@@ -1282,7 +1284,7 @@ class CupertinoTextFieldConfiguration {
   }
 }
 
-class _CupertinoSuggestionsBox {
+class CupertinoSuggestionsBox {
   static const int waitMetricsTimeoutMillis = 1000;
   static const double minOverlaySpace = 64.0;
 
@@ -1300,7 +1302,7 @@ class _CupertinoSuggestionsBox {
   double textBoxHeight = 100.0;
   late double directionUpOffset;
 
-  _CupertinoSuggestionsBox(this.context, this.direction, this.autoFlipDirection)
+  CupertinoSuggestionsBox(this.context, this.direction, this.autoFlipDirection)
       : desiredDirection = direction;
 
   void open() {
@@ -1489,7 +1491,7 @@ class _CupertinoSuggestionsBox {
 /// Supply an instance of this class to the [TypeAhead.suggestionsBoxController]
 /// property to manually control the suggestions box
 class CupertinoSuggestionsBoxController {
-  _CupertinoSuggestionsBox? _suggestionsBox;
+  CupertinoSuggestionsBox? _suggestionsBox;
   FocusNode? _effectiveFocusNode;
 
   /// Opens the suggestions box
