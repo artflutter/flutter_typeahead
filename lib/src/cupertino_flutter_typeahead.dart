@@ -776,7 +776,6 @@ class _CupertinoTypeAheadFieldState<T> extends State<CupertinoTypeAheadField<T>>
         onChanged: widget.textFieldConfiguration.onChanged,
         onEditingComplete: widget.textFieldConfiguration.onEditingComplete,
         onTap: widget.textFieldConfiguration.onTap,
-        onTapOutside: (_){},
         onSubmitted: widget.textFieldConfiguration.onSubmitted,
         inputFormatters: widget.textFieldConfiguration.inputFormatters,
         enabled: widget.textFieldConfiguration.enabled,
@@ -1131,7 +1130,7 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
             ? widget.decoration!.borderRadius
             : null,
       ),
-      child: ListView(
+      child: ListView.builder(
         padding: EdgeInsets.zero,
         primary: false,
         shrinkWrap: true,
@@ -1141,7 +1140,10 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
         reverse: widget.suggestionsBox!.direction == AxisDirection.down
             ? false
             : widget.suggestionsBox!.autoFlipListDirection,
-        children: this._suggestions!.map((T suggestion) {
+        itemCount: (this._suggestions ?? []).length,
+        itemBuilder: (context, index) {
+          final suggestion = _suggestions!.elementAt(index);
+
           return GestureDetector(
             behavior: HitTestBehavior.translucent,
             child: widget.itemBuilder!(context, suggestion),
@@ -1149,7 +1151,7 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
               widget.onSuggestionSelected!(suggestion);
             },
           );
-        }).toList(),
+        },
       ),
     );
 

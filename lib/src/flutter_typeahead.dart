@@ -1046,7 +1046,6 @@ class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
         onSubmitted: widget.textFieldConfiguration.onSubmitted,
         onEditingComplete: widget.textFieldConfiguration.onEditingComplete,
         onTap: widget.textFieldConfiguration.onTap,
-        onTapOutside: (_){},
         scrollPadding: widget.textFieldConfiguration.scrollPadding,
         textInputAction: widget.textFieldConfiguration.textInputAction,
         textCapitalization: widget.textFieldConfiguration.textCapitalization,
@@ -1422,7 +1421,7 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
   }
 
   Widget createSuggestionsWidget() {
-    Widget child = ListView(
+    Widget child = ListView.builder(
       padding: EdgeInsets.zero,
       primary: false,
       shrinkWrap: true,
@@ -1433,7 +1432,8 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
       reverse: widget.suggestionsBox!.direction == AxisDirection.down
           ? false
           : widget.suggestionsBox!.autoFlipListDirection,
-      children: List.generate(this._suggestions!.length, (index) {
+      itemCount: (this._suggestions ?? []).length,
+      itemBuilder: (context, index) {
         final suggestion = _suggestions!.elementAt(index);
         final focusNode = _focusNodes[index];
 
@@ -1449,7 +1449,7 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
             widget.onSuggestionSelected!(suggestion);
           },
         );
-      }),
+      },
     );
 
     if (widget.decoration!.hasScrollbar) {
